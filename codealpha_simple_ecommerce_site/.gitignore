@@ -7,3 +7,5 @@ media/
 staticfiles/
 *.sqlite3
 .DS_Store
+docs/
+.planning/
