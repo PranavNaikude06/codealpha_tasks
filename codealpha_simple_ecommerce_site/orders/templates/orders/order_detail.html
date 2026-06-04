@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+<main class="max-w-[600px] mx-auto px-4 py-12 flex-grow">
+    <!-- Header Success Section (Dynamic Checkmark on checkout success) -->
+    <section id="order-success-header" class="text-center mb-xl hidden">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-lg success-checkmark">
+            <span class="material-symbols-outlined text-[48px] text-green-600" style="font-variation-settings: 'wght' 600;">check_circle</span>
+        </div>
+        <h1 class="font-headline-lg text-headline-lg mb-xs font-bold text-on-surface">Order Placed Successfully!</h1>
+        <p class="text-on-surface-variant font-body-md text-body-md">Thank you for your purchase. We are processing your order.</p>
+    </section>
+
+    <!-- Loading State -->
+    <div id="order-loading-container" class="py-16 flex flex-col items-center justify-center text-center gap-md">
+        <span class="material-symbols-outlined text-[48px] text-primary animate-spin">sync</span>
+        <p class="text-on-surface-variant font-body-md">Retrieving order details...</p>
+    </div>
+
+    <!-- Order Detail Card -->
+    <div id="order-detail-card" class="hidden bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-sm overflow-hidden mb-xl">
+        <!-- Order Meta Header -->
+        <div class="p-lg border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low/20">
+            <div>
+                <p class="text-label-sm font-label-sm text-outline uppercase tracking-wider mb-xs">Order Overview</p>
+                <div class="flex items-center gap-sm">
+                    <span id="order-number-title" class="font-headline-sm text-headline-sm font-bold text-on-surface">ID: #ORD-000</span>
+                    <span id="order-status-badge" class="px-sm py-xs rounded-full text-label-sm font-label-sm font-bold">Placed</span>
+                </div>
+                <p id="order-date" class="text-body-sm font-body-sm text-on-surface-variant mt-xs">Ordered on May 24, 2024</p>
+            </div>
+            <span class="material-symbols-outlined text-[32px] text-primary">receipt_long</span>
+        </div>
+        
+        <!-- Item List -->
+        <div class="p-lg space-y-md">
+            <p class="text-label-sm font-label-sm text-outline uppercase tracking-wider font-semibold">Items Purchased</p>
+            <div id="order-items-list" class="space-y-md">
+                <!-- Dynamically populated via orders.js -->
+            </div>
+        </div>
+        
+        <!-- Shipping Address -->
+        <div class="p-lg bg-surface-container-low/50 border-t border-outline-variant/30">
+            <p class="text-label-sm font-label-sm text-outline uppercase tracking-wider mb-sm font-semibold">Shipping Destination</p>
+            <p id="shipping-name" class="font-body-md text-body-md font-semibold text-on-surface">Alex Johnson</p>
+            <p id="shipping-address" class="text-body-sm font-body-sm text-on-surface-variant">123 Design District, Suite 404</p>
+            <p id="shipping-city-zip" class="text-body-sm font-body-sm text-on-surface-variant">San Francisco, CA 94103</p>
+            <p id="shipping-phone" class="text-body-sm font-body-sm text-on-surface-variant mt-xs">Phone: +1 555 0000</p>
+        </div>
+        
+        <!-- Total Calculations -->
+        <div class="p-lg border-t border-outline-variant/30 space-y-xs">
+            <div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+                <span>Subtotal</span>
+                <span id="order-subtotal">₹0.00</span>
+            </div>
+            <div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+                <span>Shipping</span>
+                <span class="text-green-600 font-semibold">Free</span>
+            </div>
+            <div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+                <span>Tax</span>
+                <span>₹0.00</span>
+            </div>
+            <div class="flex justify-between items-center pt-sm mt-sm border-t border-outline-variant/20">
+                <span class="font-headline-sm text-headline-sm font-semibold">Order Total</span>
+                <span id="order-total" class="font-headline-sm text-headline-sm text-primary font-bold">₹0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div id="order-actions" class="hidden flex flex-col sm:flex-row gap-md">
+        <a href="/orders/" class="flex-1 text-center border-2 border-primary text-primary px-lg py-md rounded-lg font-bold text-body-md hover:bg-primary/5 active:scale-[0.98] transition-all">
+            View Order History
+        </a>
+        <a href="/" class="flex-1 text-center bg-primary text-on-primary px-lg py-md rounded-lg font-bold text-body-md shadow-md hover:bg-primary-container active:scale-[0.98] transition-all">
+            Continue Shopping
+        </a>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const ORDER_ID = "{{ order_id }}";
+</script>
+{% load static %}
+<script src="{% static 'orders/js/orders.js' %}"></script>
+{% endblock %}

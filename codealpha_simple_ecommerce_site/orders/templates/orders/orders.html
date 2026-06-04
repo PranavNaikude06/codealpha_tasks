@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<main class="flex-grow max-w-container-max mx-auto px-4 md:px-lg py-xl w-full">
+    <!-- Header Section -->
+    <div class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-md">
+        <div>
+            <h1 class="font-headline-lg text-headline-lg md:text-headline-lg sm:text-headline-lg-mobile text-on-surface mb-xs font-bold">My Orders</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant">View and track your previous purchases.</p>
+        </div>
+    </div>
+
+    <!-- Loader -->
+    <div id="orders-loading-container" class="py-16 flex flex-col items-center justify-center text-center gap-md">
+        <span class="material-symbols-outlined text-[48px] text-primary animate-spin">sync</span>
+        <p class="text-on-surface-variant font-body-md">Querying your purchase history...</p>
+    </div>
+
+    <!-- Empty Orders Banner -->
+    <div id="orders-empty-container" class="hidden py-16 flex flex-col items-center justify-center text-center gap-lg">
+        <span class="material-symbols-outlined text-[72px] text-outline">receipt_long</span>
+        <div class="space-y-xs">
+            <h2 class="font-headline-md text-headline-md text-on-surface font-semibold">No orders found</h2>
+            <p class="text-on-surface-variant font-body-md max-w-sm">You haven't placed any orders yet. Once you complete a purchase, your history will show up here!</p>
+        </div>
+        <a href="/" class="px-xl py-md bg-primary text-on-primary font-headline-sm rounded-lg hover:bg-primary-container transition-all shadow-md active:scale-95">
+            Start Shopping
+        </a>
+    </div>
+
+    <!-- Orders Stack -->
+    <div id="orders-list-container" class="hidden flex flex-col gap-md">
+        <!-- Order cards rendered dynamically via orders.js -->
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Flag to denote we are loading the listing view
+    const ORDER_ID = null;
+</script>
+{% load static %}
+<script src="{% static 'orders/js/orders.js' %}"></script>
+{% endblock %}

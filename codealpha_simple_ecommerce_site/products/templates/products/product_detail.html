@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Loading Product Details{% endblock %}
+
+{% block content %}
+<main class="max-w-container-max mx-auto w-full px-4 md:px-lg py-md md:py-xl flex-grow">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-xs mb-lg text-on-surface-variant font-body-sm text-body-sm">
+        <a class="hover:text-primary transition-colors" href="/">Home</a>
+        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+        <span id="breadcrumb-category" class="hover:text-primary transition-colors cursor-pointer">Category</span>
+        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+        <span id="breadcrumb-title" class="text-on-surface font-semibold">Product Name</span>
+    </nav>
+
+    <!-- Details Grid -->
+    <div id="product-loading-container" class="py-16 flex flex-col items-center justify-center text-center gap-md">
+        <span class="material-symbols-outlined text-[48px] text-primary animate-spin">sync</span>
+        <p class="text-on-surface-variant font-body-md">Retrieving product parameters...</p>
+    </div>
+
+    <div id="product-detail-container" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-xl items-start">
+        <!-- Left: Product Image -->
+        <div class="w-full aspect-square bg-surface-container-low rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+            <img id="product-image" alt="Product Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src=""/>
+        </div>
+        
+        <!-- Right: Product Details -->
+        <div class="flex flex-col space-y-md">
+            <div class="flex flex-col gap-xs">
+                <span id="product-category-badge" class="inline-flex items-center self-start px-md py-xs rounded-full border border-primary text-primary font-label-sm text-label-sm uppercase tracking-wider">
+                    Category
+                </span>
+                <h1 id="product-name" class="font-display text-headline-lg lg:text-display text-on-surface tracking-tight font-bold">Product Title</h1>
+            </div>
+            
+            <div class="flex items-center gap-md mt-sm">
+                <span id="product-price" class="font-display text-display text-primary">₹0.00</span>
+                <span id="stock-badge" class="inline-flex items-center px-md py-1 rounded-full font-label-md text-label-md">
+                    <!-- Dynamic checkmark and text -->
+                </span>
+            </div>
+            
+            <p id="product-description" class="text-on-surface-variant font-body-lg text-body-lg leading-relaxed max-w-xl">
+                Product full description text.
+            </p>
+            
+            <div class="h-px w-full bg-outline-variant/30 my-md"></div>
+            
+            <!-- Controls -->
+            <div class="flex flex-col gap-lg">
+                <div class="flex items-center gap-xl">
+                    <div class="flex flex-col gap-sm">
+                        <label class="font-label-md text-label-md text-on-surface-variant uppercase">Quantity</label>
+                        <div class="flex items-center border border-outline-variant rounded-lg bg-surface overflow-hidden">
+                            <button id="qty-decrement" class="p-3 hover:bg-surface-container-low transition-colors rounded-l-lg active:scale-95 border-none outline-none">
+                                <span class="material-symbols-outlined text-on-surface-variant">remove</span>
+                            </button>
+                            <input class="w-12 text-center bg-transparent border-none focus:ring-0 font-headline-sm text-headline-sm" id="quantity-input" min="1" type="text" value="1" readonly/>
+                            <button id="qty-increment" class="p-3 hover:bg-surface-container-low transition-colors rounded-r-lg active:scale-95 border-none outline-none">
+                                <span class="material-symbols-outlined text-on-surface-variant">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-md">
+                    <button id="add-to-cart-btn" class="flex-grow py-md px-2xl bg-gradient-to-r from-primary to-secondary text-on-primary font-headline-sm text-headline-sm rounded-xl shadow-lg hover:shadow-xl hover:opacity-95 transition-all active:scale-[0.98] flex items-center justify-center gap-md">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Trust signals -->
+            <div class="flex items-center gap-lg mt-xl pt-lg border-t border-outline-variant/20">
+                <div class="flex items-center gap-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-primary">local_shipping</span>
+                    <span class="font-body-sm text-body-sm">Free returns</span>
+                </div>
+                <div class="flex items-center gap-sm text-on-surface-variant">
+                    <span class="material-symbols-outlined text-primary">shield</span>
+                    <span class="font-body-sm text-body-sm">Secure checkout</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Info Tabs (Bento Style) -->
+    <section class="mt-3xl grid grid-cols-1 md:grid-cols-3 gap-lg">
+        <div class="md:col-span-2 p-xl bg-surface-container-low rounded-xl border border-outline-variant/10">
+            <h3 class="font-headline-md text-headline-md mb-md font-semibold text-on-surface">Product Specifications</h3>
+            <div class="grid grid-cols-2 gap-md text-body-md">
+                <div class="p-md bg-white rounded-lg"><span class="text-on-surface-variant font-medium">Warranty</span><p class="font-semibold text-on-surface">2 Years Global</p></div>
+                <div class="p-md bg-white rounded-lg"><span class="text-on-surface-variant font-medium">Return Period</span><p class="font-semibold text-on-surface">30 Days Return</p></div>
+                <div class="p-md bg-white rounded-lg"><span class="text-on-surface-variant font-medium">Shipping Time</span><p class="font-semibold text-on-surface">Ships in 24 hours</p></div>
+                <div class="p-md bg-white rounded-lg"><span class="text-on-surface-variant font-medium">Customer Support</span><p class="font-semibold text-on-surface">24/7 Support Desk</p></div>
+            </div>
+        </div>
+        <div class="p-xl bg-primary-container text-on-primary-container rounded-xl flex flex-col justify-center items-center text-center">
+            <span class="material-symbols-outlined text-[48px] mb-md" style="font-variation-settings: 'FILL' 1;">verified</span>
+            <h3 class="font-headline-sm text-headline-sm mb-sm font-semibold">Manufacturer Guarantee</h3>
+            <p class="font-body-md text-body-md opacity-90">Enjoy premium support and guaranteed original quality with every order.</p>
+        </div>
+    </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const PRODUCT_ID = "{{ product_id }}";
+</script>
+{% load static %}
+<script src="{% static 'products/js/product_detail.js' %}"></script>
+{% endblock %}

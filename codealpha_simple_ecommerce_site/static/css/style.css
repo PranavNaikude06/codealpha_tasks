@@ -1,0 +1,9 @@
+/* Placeholder stylesheet — replace with your Stitch-generated CSS */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Inter, sans-serif; background: #f9fafb; color: #111827; }
+#navbar { background: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb; }
+.nav-brand a { font-weight: 700; color: #6366f1; text-decoration: none; font-size: 1.25rem; }
+.nav-links a { margin-left: 1rem; color: #374151; text-decoration: none; }
+.badge { background: #6366f1; color: #fff; border-radius: 9999px; padding: 0 6px; font-size: 0.75rem; }
+#main-content { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+footer { text-align: center; padding: 2rem; color: #6b7280; border-top: 1px solid #e5e7eb; margin-top: 4rem; }

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Discover Amazing Products{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-gradient relative overflow-hidden py-16 md:py-24">
+    <div class="max-w-container-max mx-auto px-4 md:px-lg relative z-10 text-center md:text-left flex flex-col md:flex-row items-center gap-xl">
+        <div class="flex-1">
+            <h1 class="font-display text-display text-on-primary mb-md leading-tight">Discover <br/>Amazing Products</h1>
+            <p class="text-on-primary/90 text-body-lg font-body-lg max-w-lg mb-xl">Elevate your lifestyle with our curated collection of premium electronics, fashion, and home essentials. Quality guaranteed.</p>
+            <div class="flex flex-wrap gap-md justify-center md:justify-start">
+                <button onclick="scrollToProducts()" class="px-xl py-md bg-white text-primary font-bold rounded-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all active:scale-95">
+                    Shop Now
+                </button>
+                <button onclick="scrollToProducts('electronics')" class="px-xl py-md glass-effect text-on-primary font-bold rounded-lg hover:bg-white/20 transition-all">
+                    View Electronics
+                </button>
+            </div>
+        </div>
+        <div class="flex-1 w-full max-w-md md:max-w-lg hidden md:block">
+            <div class="relative aspect-square rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20">
+                <img alt="Premium Product Showcase" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzJf7yJE8RJTjIgGX3bG-m2t9bBuGOqTSs-3e1NqJjpGXfek5STF7rjNOT4anPYg7GEgXMkNPtzv7x8sWYC6OiQie1D8DyfaTaJ49G-xtiS1SvILiRosCsJzdhf-d2OnFl2B0nFKyS9WZd9Cd2_WL6ZuoIvaIaB7K212JLKTaTHi1x2iWYrrQbw7d4r3pG7E88VccfWd9w0uFaWpyRxiZ02i_FLoNfCDgbV65Eh7vrXjuMKVJCLG6CJXmaBZfURPQySkEnw53a8W_q"/>
+            </div>
+        </div>
+    </div>
+    <!-- Decorative Elements -->
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-primary-container/20 rounded-full blur-3xl"></div>
+</section>
+
+<!-- Filters & Product Grid Container -->
+<section id="products-section" class="max-w-container-max mx-auto px-4 md:px-lg py-xl">
+    <!-- Filters Pill Row -->
+    <div id="category-filters" class="flex items-center gap-sm mb-xl overflow-x-auto pb-2 no-scrollbar">
+        <button data-category="all" class="category-chip px-6 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md whitespace-nowrap shadow-md transition-all">All</button>
+        <button data-category="electronics" class="category-chip px-6 py-2 bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed-dim transition-all rounded-full font-label-md text-label-md whitespace-nowrap">Electronics</button>
+        <button data-category="clothing" class="category-chip px-6 py-2 bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed-dim transition-all rounded-full font-label-md text-label-md whitespace-nowrap">Clothing</button>
+        <button data-category="books" class="category-chip px-6 py-2 bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed-dim transition-all rounded-full font-label-md text-label-md whitespace-nowrap">Books</button>
+        <button data-category="home-kitchen" class="category-chip px-6 py-2 bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed-dim transition-all rounded-full font-label-md text-label-md whitespace-nowrap">Home & Kitchen</button>
+        <button data-category="sports" class="category-chip px-6 py-2 bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed-dim transition-all rounded-full font-label-md text-label-md whitespace-nowrap">Sports</button>
+        <button data-category="beauty" class="category-chip px-6 py-2 bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed-dim transition-all rounded-full font-label-md text-label-md whitespace-nowrap">Beauty</button>
+    </div>
+
+    <!-- Feedback banner for empty searches -->
+    <div id="products-info-banner" class="hidden p-lg bg-surface-container-low text-on-surface-variant rounded-xl border border-surface-variant/40 mb-lg text-center font-body-md">
+        No products match your criteria. Showing all items instead.
+    </div>
+
+    <!-- Product Grid -->
+    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter min-h-[400px]">
+        <!-- Skeletons populated via products.js on loading -->
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{% load static %}
+<script src="{% static 'products/js/products.js' %}"></script>
+<script>
+    function scrollToProducts(category = null) {
+        document.getElementById('products-section').scrollIntoView({ behavior: 'smooth' });
+        if (category) {
+            const chip = document.querySelector(`.category-chip[data-category="${category}"]`);
+            if (chip) chip.click();
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping Cart{% endblock %}
+
+{% block content %}
+<main class="flex-grow max-w-container-max mx-auto w-full px-4 md:px-lg py-xl">
+    <h1 class="font-headline-lg text-headline-lg mb-xl md:mb-2xl font-bold text-on-surface">Your Cart</h1>
+    
+    <!-- Loader -->
+    <div id="cart-loading-container" class="py-16 flex flex-col items-center justify-center text-center gap-md">
+        <span class="material-symbols-outlined text-[48px] text-primary animate-spin">sync</span>
+        <p class="text-on-surface-variant font-body-md">Querying active shopping session...</p>
+    </div>
+
+    <!-- Empty Cart Banner -->
+    <div id="cart-empty-container" class="hidden py-16 flex flex-col items-center justify-center text-center gap-lg">
+        <span class="material-symbols-outlined text-[72px] text-outline">shopping_cart_off</span>
+        <div class="space-y-xs">
+            <h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Your cart is empty</h2>
+            <p class="text-on-surface-variant font-body-md max-w-sm">Looks like you haven't added any products to your cart yet. Let's find some amazing deals!</p>
+        </div>
+        <a href="/" class="px-xl py-md bg-primary text-on-primary font-headline-sm rounded-lg hover:bg-primary-container transition-all shadow-md active:scale-95">
+            Continue Shopping
+        </a>
+    </div>
+
+    <!-- Main Cart Interface -->
+    <div id="cart-content-grid" class="hidden grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-gutter items-start">
+        <!-- Left Column: Cart Items -->
+        <section id="cart-items-container" class="space-y-md">
+            <!-- Dynamic items rendered via cart.js -->
+        </section>
+
+        <!-- Right Column: Order Summary -->
+        <aside class="sticky top-24">
+            <div class="bg-surface-container-lowest rounded-xl shadow-soft p-lg border border-surface-variant/30">
+                <h2 class="font-headline-md text-headline-md mb-lg font-semibold text-on-surface">Order Summary</h2>
+                
+                <div class="space-y-md border-b border-surface-variant pb-lg mb-lg">
+                    <div class="flex justify-between items-center">
+                        <span class="text-on-surface-variant font-body-md text-body-md">Subtotal</span>
+                        <span id="cart-subtotal" class="text-on-surface font-semibold text-label-md">₹0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-on-surface-variant font-body-md text-body-md">Shipping</span>
+                        <span class="text-green-600 font-semibold text-label-md">Free</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-on-surface-variant font-body-md text-body-md">Tax (8%)</span>
+                        <span id="cart-tax" class="text-on-surface font-semibold text-label-md">₹0.00</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mb-xl">
+                    <span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Total</span>
+                    <span id="cart-total" class="font-display text-headline-lg text-primary font-bold">₹0.00</span>
+                </div>
+
+                <button id="checkout-btn" class="w-full py-md bg-gradient-to-r from-primary to-secondary text-on-primary font-headline-sm text-headline-sm rounded-lg shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:shadow-xl flex items-center justify-center gap-sm">
+                    <span>Proceed to Checkout</span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+
+                <div class="mt-xl flex items-center justify-center gap-xs text-on-surface-variant">
+                    <span class="material-symbols-outlined text-body-sm" style="font-variation-settings: 'FILL' 1;">lock</span>
+                    <span class="font-body-sm text-body-sm">Secure Checkout</span>
+                </div>
+            </div>
+            
+            <div class="mt-lg p-lg bg-surface-container-low border border-dashed border-outline-variant rounded-xl">
+                <h4 class="font-label-md text-label-md mb-md font-semibold">Have a Promo Code?</h4>
+                <div class="flex gap-sm">
+                    <input class="flex-grow bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-2 focus:ring-2 focus:ring-primary/20 text-body-sm outline-none" placeholder="CODE2026" type="text" id="promo-input"/>
+                    <button onclick="applyPromo()" class="px-lg py-2 bg-on-background text-on-secondary rounded-lg font-label-md text-label-md active:scale-95 transition-transform">Apply</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+{% load static %}
+<script src="{% static 'cart/js/cart.js' %}"></script>
+<script>
+    function applyPromo() {
+        const input = document.getElementById('promo-input');
+        if (input && input.value.trim()) {
+            alert(`Promo code "${input.value.trim()}" applied! (Discount calculations deferred)`);
+            input.value = '';
+        }
+    }
+</script>
+{% endblock %}
