@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nexus - Explore</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="api.js"></script>
+<script>
+    api.checkAuth();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9ff;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#0d1c2e",
+                        "secondary-container": "#d1e1fa",
+                        "primary-fixed": "#dfe0ff",
+                        "background": "#f9f9ff",
+                        "surface-bright": "#f9f9ff",
+                        "on-secondary-fixed-variant": "#39485c",
+                        "on-surface-variant": "#454653",
+                        "outline-variant": "#c6c5d5",
+                        "on-primary-fixed-variant": "#2b38aa",
+                        "surface-dim": "#d4daea",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#d4e4fc",
+                        "on-tertiary-container": "#fff6f2",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#dde2f3",
+                        "on-background": "#161c27",
+                        "tertiary": "#874a00",
+                        "inverse-primary": "#bdc2ff",
+                        "tertiary-container": "#aa5f00",
+                        "on-tertiary-fixed-variant": "#6c3a00",
+                        "on-primary-container": "#faf7ff",
+                        "surface-container-low": "#f1f3ff",
+                        "error-container": "#ffdad6",
+                        "outline": "#767684",
+                        "on-surface": "#161c27",
+                        "on-primary-fixed": "#000965",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#5a67d8",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#b8c8e0",
+                        "surface": "#f9f9ff",
+                        "surface-container": "#e8eeff",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#ecf0ff",
+                        "surface-container-high": "#e3e8f9",
+                        "tertiary-fixed": "#ffdcc1",
+                        "surface-variant": "#dde2f3",
+                        "primary": "#404dbe",
+                        "on-tertiary-fixed": "#2e1500",
+                        "inverse-surface": "#2a303d",
+                        "secondary": "#515f74",
+                        "tertiary-fixed-dim": "#ffb778"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "container-margin": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "gutter": "12px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["15px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest sticky top-0 z-50 border-b border-outline-variant">
+<div class="flex justify-between items-center w-full px-lg py-sm max-w-7xl mx-auto h-16">
+<a class="font-headline-md text-headline-md font-bold text-primary" href="index.html">Nexus</a>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="index.html">Feed</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="explore.html">Explore</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" id="nav-profile-link" href="#">Profile</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#" onclick="api.logout(); return false;">Logout</a>
+</nav>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-on-surface-variant" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<!-- Mobile Dropdown Menu -->
+<div id="mobile-menu" class="hidden md:hidden bg-surface-container-lowest border-b border-outline-variant py-sm px-lg flex flex-col gap-sm">
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md" href="index.html">Feed</a>
+<a class="text-primary font-bold font-body-md text-body-md" href="explore.html">Explore</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md" id="mobile-nav-profile-link" href="#">Profile</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md" href="#" onclick="api.logout(); return false;">Logout</a>
+</div>
+</header>
+<div class="max-w-7xl mx-auto flex">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col gap-lg p-lg border-r border-outline-variant w-[240px] h-[calc(100vh-64px)] sticky top-16 bg-surface">
+<div class="flex flex-col gap-xs mb-md">
+<div class="flex items-center gap-sm">
+<img id="sidebar-avatar" alt="Avatar" class="w-10 h-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150"/>
+<div class="flex flex-col min-w-0">
+<span id="sidebar-display-name" class="font-bold text-on-surface font-body-md text-body-md truncate max-w-[150px] block">...</span>
+<span id="sidebar-username" class="text-on-surface-variant font-label-sm text-label-sm truncate max-w-[150px] block">@...</span>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-sm">
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high rounded-lg transition-all" href="index.html">
+<span class="material-symbols-outlined">dynamic_feed</span>
+<span class="font-label-sm text-label-sm">Feed</span>
+</a>
+<a class="flex items-center gap-md bg-secondary-container text-on-secondary-container rounded-lg px-md py-sm transition-all" href="explore.html">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high rounded-lg transition-all" id="sidebar-profile-link" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high rounded-lg transition-all" href="edit_profile.html">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Edit Profile</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 min-w-0 bg-background px-container-margin py-lg lg:px-xl">
+<!-- Header Section -->
+<header class="mb-xl">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Explore</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">See what everyone is posting across the Nexus network.</p>
+</header>
+
+<div id="posts-container" class="max-w-[640px] mx-auto lg:mx-0 flex flex-col gap-md">
+  <!-- Explore posts rendered here -->
+</div>
+
+<!-- Empty State -->
+<div class="hidden flex-col items-center justify-center py-xl text-center" id="empty-state">
+<div class="w-16 h-16 bg-surface-container-high rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-outline text-[32px]">group_add</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface">No posts yet</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Check back later for new updates.</p>
+</div>
+<!-- Loader / End of Feed -->
+<div class="py-lg flex flex-col items-center gap-sm" id="loader">
+<div class="flex gap-xs">
+<span class="w-2 h-2 bg-primary rounded-full animate-bounce"></span>
+<span class="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+<span class="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+</div>
+<p class="text-on-surface-variant text-label-sm">Loading explore feed...</p>
+</div>
+</main>
+<!-- Right Widgets (Optional extra to balance layout) -->
+<aside class="hidden xl:flex flex-col gap-lg p-lg w-[320px] sticky top-16 h-[calc(100vh-64px)]">
+<div class="bg-surface shadow-[0px_1px_4px_rgba(0,0,0,0.08)] rounded-xl p-md">
+<h3 class="font-bold text-on-surface font-body-md text-body-md mb-md">Suggested Creators</h3>
+<div class="flex flex-col gap-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<img class="w-10 h-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&h=100"/>
+<div class="flex flex-col">
+<span class="font-bold text-on-surface text-sm">Sarah Jenkins</span>
+<span class="text-on-surface-variant text-[11px]">@sarah_j</span>
+</div>
+</div>
+<a href="profile.html?username=sarah_j" class="text-primary font-bold text-xs hover:bg-primary-fixed p-1 rounded transition-colors">View</a>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<img class="w-10 h-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&h=100"/>
+<div class="flex flex-col">
+<span class="font-bold text-on-surface text-sm">Marcus Villanova</span>
+<span class="text-on-surface-variant text-[11px]">@marcus_v</span>
+</div>
+</div>
+<a href="profile.html?username=marcus_v" class="text-primary font-bold text-xs hover:bg-primary-fixed p-1 rounded transition-colors">View</a>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<img class="w-10 h-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&h=100"/>
+<div class="flex flex-col">
+<span class="font-bold text-on-surface text-sm">Alex Mercer</span>
+<span class="text-on-surface-variant text-[11px]">@alex_travels</span>
+</div>
+</div>
+<a href="profile.html?username=alex_travels" class="text-primary font-bold text-xs hover:bg-primary-fixed p-1 rounded transition-colors">View</a>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- Mobile BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant flex justify-around py-sm z-50">
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="index.html">
+<span class="material-symbols-outlined">dynamic_feed</span>
+<span class="text-[10px] font-medium">Feed</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="explore.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="text-[10px] font-bold">Explore</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" id="mobile-bottom-profile-link" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="edit_profile.html">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Edit</span>
+</a>
+</nav>
+<script>
+    const currentUser = api.getUser();
+
+    // Set up profile links
+    const profileHref = `profile.html?username=${currentUser.username}`;
+    document.getElementById('nav-profile-link').href = profileHref;
+    if (document.getElementById('mobile-nav-profile-link')) document.getElementById('mobile-nav-profile-link').href = profileHref;
+    document.getElementById('sidebar-profile-link').href = profileHref;
+    document.getElementById('mobile-bottom-profile-link').href = profileHref;
+
+    // Load user sidebar details
+    async function loadSidebar() {
+        try {
+            const data = await api.get(`/users/${currentUser.username}`);
+            document.getElementById('sidebar-avatar').src = data.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150';
+            document.getElementById('sidebar-display-name').textContent = data.username;
+            document.getElementById('sidebar-username').textContent = `@${data.username}`;
+        } catch (e) {
+            console.error('Failed to load user info', e);
+        }
+    }
+
+    // Load Explore Posts
+    async function loadExplore() {
+        const postsContainer = document.getElementById('posts-container');
+        const loader = document.getElementById('loader');
+        const emptyState = document.getElementById('empty-state');
+        
+        try {
+            const posts = await api.get('/posts/explore');
+            loader.classList.add('hidden');
+            
+            if (posts.length === 0) {
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+                postsContainer.innerHTML = '';
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            emptyState.classList.remove('flex');
+            
+            postsContainer.innerHTML = posts.map(p => {
+                const isOwn = p.user_id === currentUser.id;
+                const likedClass = p.is_liked ? 'text-primary' : 'text-on-surface-variant';
+                const likedFill = p.is_liked ? '1' : '0';
+                const imageHtml = p.image_url ? `<img src="${p.image_url}" alt="Post Image" class="w-full h-[320px] object-cover rounded-lg mb-md"/>` : '';
+                const editDeleteHtml = isOwn ? `
+                    <div class="flex gap-sm">
+                        <button onclick="editPost(${p.id}, this)" class="text-on-surface-variant hover:text-tertiary transition-colors"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                        <button onclick="deletePost(${p.id})" class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                    </div>` : '';
+
+                return `
+                <article class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant overflow-hidden w-full" id="post-${p.id}">
+                    <div class="p-md">
+                        <div class="flex justify-between items-start mb-md">
+                            <a href="profile.html?username=${p.author.username}" class="flex gap-md">
+                                <img src="${p.author.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150'}" alt="${p.author.username}" class="w-10 h-10 rounded-full object-cover"/>
+                                <div>
+                                    <h3 class="font-bold text-on-surface font-body-lg text-body-lg">${p.author.username}</h3>
+                                    <p class="text-on-surface-variant text-[12px]">${api.formatRelativeTime(p.created_at)} ${p.is_edited ? '• Edited' : ''}</p>
+                                </div>
+                            </a>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface mb-md whitespace-pre-wrap post-content">${p.content}</p>
+                        ${imageHtml}
+                        <!-- Action Bar -->
+                        <div class="flex items-center justify-between pt-sm border-t border-outline-variant">
+                            <div class="flex gap-lg">
+                                <button onclick="toggleLike(${p.id}, this)" class="flex items-center gap-xs ${likedClass} transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' ${likedFill}">favorite</span>
+                                    <span class="text-label-sm like-count">${p.like_count}</span>
+                                </button>
+                                <a href="post.html?id=${p.id}" class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">comment</span>
+                                    <span class="text-label-sm">${p.comment_count}</span>
+                                </a>
+                            </div>
+                            ${editDeleteHtml}
+                        </div>
+                    </div>
+                </article>`;
+            }).join('');
+        } catch (e) {
+            loader.textContent = 'Failed to load posts';
+            console.error(e);
+        }
+    }
+
+    // Toggle post like
+    async function toggleLike(postId, btn) {
+        const icon = btn.querySelector('.material-symbols-outlined');
+        const countSpan = btn.querySelector('.like-count');
+        const isLiked = icon.style.fontVariationSettings.includes("'FILL' 1");
+        
+        let count = parseInt(countSpan.textContent);
+        
+        if (isLiked) {
+            icon.style.fontVariationSettings = "'FILL' 0";
+            btn.classList.remove('text-primary');
+            btn.classList.add('text-on-surface-variant');
+            countSpan.textContent = count - 1;
+        } else {
+            icon.style.fontVariationSettings = "'FILL' 1";
+            btn.classList.add('text-primary');
+            btn.classList.remove('text-on-surface-variant');
+            countSpan.textContent = count + 1;
+            btn.classList.add('scale-110');
+            setTimeout(() => btn.classList.remove('scale-110'), 200);
+        }
+
+        try {
+            if (isLiked) {
+                await api.delete(`/posts/${postId}/like`);
+            } else {
+                await api.post(`/posts/${postId}/like`);
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Could not update like');
+            loadExplore();
+        }
+    }
+
+    // Edit Post
+    async function editPost(postId, btn) {
+        const postArticle = document.getElementById(`post-${postId}`);
+        const contentP = postArticle.querySelector('.post-content');
+        const originalContent = contentP.textContent;
+        const newContent = prompt('Edit your post:', originalContent);
+        if (newContent === null || newContent.trim() === '' || newContent === originalContent) return;
+
+        try {
+            await api.put(`/posts/${postId}`, { content: newContent });
+            contentP.textContent = newContent;
+            alert('Post updated successfully!');
+        } catch (e) {
+            alert(e.message || 'Could not update post');
+        }
+    }
+
+    // Delete post
+    async function deletePost(postId) {
+        if (!confirm('Are you sure you want to delete this post?')) return;
+        try {
+            await api.delete(`/posts/${postId}`);
+            document.getElementById(`post-${postId}`).remove();
+        } catch (e) {
+            alert(e.message || 'Could not delete post');
+        }
+    }
+
+    loadSidebar();
+    loadExplore();
+</script>
+</body></html>

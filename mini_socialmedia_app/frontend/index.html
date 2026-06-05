@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nexus | Feed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="api.js"></script>
+<script>
+    api.checkAuth();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9ff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .feed-container {
+            max-width: 1040px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#0d1c2e",
+                    "secondary-container": "#d1e1fa",
+                    "primary-fixed": "#dfe0ff",
+                    "background": "#f9f9ff",
+                    "surface-bright": "#f9f9ff",
+                    "on-secondary-fixed-variant": "#39485c",
+                    "on-surface-variant": "#454653",
+                    "outline-variant": "#c6c5d5",
+                    "on-primary-fixed-variant": "#2b38aa",
+                    "surface-dim": "#d4daea",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#d4e4fc",
+                    "on-tertiary-container": "#fff6f2",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#dde2f3",
+                    "on-background": "#161c27",
+                    "tertiary": "#874a00",
+                    "inverse-primary": "#bdc2ff",
+                    "tertiary-container": "#aa5f00",
+                    "on-tertiary-fixed-variant": "#6c3a00",
+                    "on-primary-container": "#faf7ff",
+                    "surface-container-low": "#f1f3ff",
+                    "error-container": "#ffdad6",
+                    "outline": "#767684",
+                    "on-surface": "#161c27",
+                    "on-primary-fixed": "#000965",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#5a67d8",
+                    "primary-fixed-dim": "#bdc2ff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed-dim": "#b8c8e0",
+                    "surface": "#f9f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#556479",
+                    "surface-tint": "#4552c3",
+                    "surface-container": "#e8eeff",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#ecf0ff",
+                    "surface-container-high": "#e3e8f9",
+                    "tertiary-fixed": "#ffdcc1",
+                    "surface-variant": "#dde2f3",
+                    "primary": "#404dbe",
+                    "on-tertiary-fixed": "#2e1500",
+                    "inverse-surface": "#2a303d",
+                    "secondary": "#515f74",
+                    "tertiary-fixed-dim": "#ffb778"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "base": "4px",
+                    "xs": "4px",
+                    "xl": "32px",
+                    "container-margin": "16px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "gutter": "12px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["15px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background">
+<!-- TopNavBar Component -->
+<header class="bg-surface-container-lowest sticky top-0 z-50 border-b border-outline-variant">
+<div class="flex justify-between items-center w-full px-lg py-sm max-w-7xl mx-auto">
+<a class="font-headline-md text-headline-md font-bold text-primary" href="index.html">Nexus</a>
+<!-- Desktop Navigation -->
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="index.html">Feed</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="explore.html">Explore</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" id="nav-profile-link" href="#">Profile</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#" onclick="api.logout(); return false;">Logout</a>
+</nav>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-on-surface-variant" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<!-- Mobile Dropdown Menu -->
+<div id="mobile-menu" class="hidden md:hidden bg-surface-container-lowest border-b border-outline-variant py-sm px-lg flex flex-col gap-sm">
+<a class="text-primary font-bold font-body-md text-body-md" href="index.html">Feed</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md" href="explore.html">Explore</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md" id="mobile-nav-profile-link" href="#">Profile</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md" href="#" onclick="api.logout(); return false;">Logout</a>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-container-margin lg:px-lg py-lg flex gap-lg">
+<!-- Left Sidebar (SideNavBar Anchor) -->
+<aside class="hidden lg:flex flex-col gap-lg w-[240px] sticky top-[80px] h-fit">
+<!-- User Profile Card -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant">
+<div class="flex flex-col items-center text-center">
+<img id="sidebar-avatar" alt="Avatar" class="w-20 h-20 rounded-full object-cover mb-md border-2 border-primary-fixed" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150"/>
+<h2 id="sidebar-display-name" class="font-headline-md text-headline-md text-on-surface w-full truncate px-sm">...</h2>
+<p id="sidebar-username" class="font-label-sm text-label-sm text-on-surface-variant mb-sm w-full truncate px-sm">@...</p>
+<p id="sidebar-bio" class="font-body-md text-body-md text-on-secondary-container mb-md leading-tight">...</p>
+<div class="flex justify-between w-full border-t border-outline-variant pt-md">
+<div class="flex flex-col items-center">
+<span id="sidebar-post-count" class="font-bold text-on-surface">0</span>
+<span class="text-[11px] uppercase tracking-wider text-on-surface-variant">Posts</span>
+</div>
+<div class="flex flex-col items-center">
+<span id="sidebar-follower-count" class="font-bold text-on-surface">0</span>
+<span class="text-[11px] uppercase tracking-wider text-on-surface-variant">Followers</span>
+</div>
+<div class="flex flex-col items-center">
+<span id="sidebar-following-count" class="font-bold text-on-surface">0</span>
+<span class="text-[11px] uppercase tracking-wider text-on-surface-variant">Following</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Navigation Menu -->
+<nav class="flex flex-col gap-sm">
+<a class="flex items-center gap-md bg-secondary-container text-on-secondary-container rounded-lg px-md py-sm transition-all" href="index.html">
+<span class="material-symbols-outlined" data-icon="dynamic_feed">dynamic_feed</span>
+<span class="font-label-sm text-label-sm">Feed</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high rounded-lg transition-all" href="explore.html">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high rounded-lg transition-all" id="sidebar-profile-link" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant px-md py-sm hover:bg-surface-container-high rounded-lg transition-all" href="edit_profile.html">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-sm text-label-sm">Edit Profile</span>
+</a>
+</nav>
+<button class="w-full bg-primary-container text-on-primary-container font-bold py-md rounded-xl shadow-sm hover:opacity-90 transition-all flex items-center justify-center gap-sm" onclick="document.getElementById('new-post-content').focus()">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                New Post
+            </button>
+</aside>
+<!-- Right Content Area: Feed -->
+<section class="flex-1 max-w-[640px] mx-auto lg:mx-0 flex flex-col gap-md">
+<!-- Create Post Quick Input -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant mb-base">
+<div class="flex gap-md">
+<img id="post-input-avatar" class="w-10 h-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150"/>
+<div class="flex-1">
+<form id="create-post-form">
+<textarea id="new-post-content" class="w-full bg-surface-container-low border-none rounded-xl p-md text-body-md focus:ring-2 focus:ring-primary-container resize-none focus:outline-none" placeholder="What's on your mind?" rows="2" maxlength="500" required></textarea>
+<div id="image-url-container" class="mt-sm hidden">
+<input id="new-post-image-url" type="url" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-md py-2 text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" placeholder="Paste image URL here..."/>
+</div>
+<div class="flex justify-between mt-sm items-center">
+<div class="flex gap-sm text-on-surface-variant">
+<button type="button" onclick="toggleImageInput()" class="p-xs hover:bg-surface-container-high rounded-full" title="Add Image URL"><span class="material-symbols-outlined text-[20px]">image</span></button>
+</div>
+<button type="submit" class="bg-primary text-on-primary font-bold px-lg py-sm rounded-full text-label-sm" id="post-btn">Post</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+<div id="posts-container" class="flex flex-col gap-md">
+  <!-- Dynamic posts inserted here -->
+</div>
+
+<!-- Empty State -->
+<div class="hidden flex-col items-center justify-center py-xl text-center" id="empty-state">
+<div class="w-16 h-16 bg-surface-container-high rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-outline text-[32px]">group_add</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface">No posts yet</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Follow someone to get started or create your first post!</p>
+</div>
+<!-- Loader / End of Feed -->
+<div class="py-lg flex flex-col items-center gap-sm" id="loader">
+<div class="flex gap-xs">
+<span class="w-2 h-2 bg-primary rounded-full animate-bounce"></span>
+<span class="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+<span class="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+</div>
+<p class="text-on-surface-variant text-label-sm">Loading posts...</p>
+</div>
+</section>
+<!-- Right Sidebar (Extra Context / Widgets) -->
+<aside class="hidden xl:flex flex-col gap-lg w-[280px]">
+<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant">
+<h4 class="font-bold text-on-surface mb-md text-label-sm uppercase tracking-wider">Suggested for you</h4>
+<div class="flex flex-col gap-md" id="suggestions-container">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<img class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&h=100"/>
+<div>
+<p class="text-[13px] font-bold">Sarah Jenkins</p>
+<p class="text-[11px] text-on-surface-variant">@sarah_j</p>
+</div>
+</div>
+<a href="profile.html?username=sarah_j" class="text-primary font-bold text-[12px] hover:underline">View</a>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<img class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&h=100"/>
+<div>
+<p class="text-[13px] font-bold">Marcus Villanova</p>
+<p class="text-[11px] text-on-surface-variant">@marcus_v</p>
+</div>
+</div>
+<a href="profile.html?username=marcus_v" class="text-primary font-bold text-[12px] hover:underline">View</a>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<img class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&h=100"/>
+<div>
+<p class="text-[13px] font-bold">Alex Mercer</p>
+<p class="text-[11px] text-on-surface-variant">@alex_travels</p>
+</div>
+</div>
+<a href="profile.html?username=alex_travels" class="text-primary font-bold text-[12px] hover:underline">View</a>
+</div>
+</div>
+</div>
+<footer class="px-md">
+<nav class="flex flex-wrap gap-x-md gap-y-xs text-[11px] text-on-surface-variant">
+<a class="hover:underline" href="#">Privacy</a>
+<a class="hover:underline" href="#">Terms</a>
+<a class="hover:underline" href="#">Cookies</a>
+<a class="hover:underline" href="#">Nexus © 2026</a>
+</nav>
+</footer>
+</aside>
+</main>
+<!-- Mobile Bottom Nav -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant flex justify-around items-center py-sm z-50">
+<a class="flex flex-col items-center gap-xs text-primary" href="index.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-bold">Feed</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="explore.html">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px]">Explore</span>
+</a>
+<button class="w-12 h-12 bg-primary-container text-on-primary-container rounded-full -mt-lg shadow-lg flex items-center justify-center" onclick="document.getElementById('new-post-content').focus()">
+<span class="material-symbols-outlined">add</span>
+</button>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="edit_profile.html">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px]">Edit</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" id="mobile-bottom-profile-link" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px]">Profile</span>
+</a>
+</nav>
+
+<script>
+    const currentUser = api.getUser();
+    
+    // Set up profile links
+    const profileHref = `profile.html?username=${currentUser.username}`;
+    document.getElementById('nav-profile-link').href = profileHref;
+    if (document.getElementById('mobile-nav-profile-link')) document.getElementById('mobile-nav-profile-link').href = profileHref;
+    document.getElementById('sidebar-profile-link').href = profileHref;
+    document.getElementById('mobile-bottom-profile-link').href = profileHref;
+
+    // Load Sidebar Info from backend
+    async function loadSidebar() {
+        try {
+            const data = await api.get(`/users/${currentUser.username}`);
+            document.getElementById('sidebar-avatar').src = data.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150';
+            document.getElementById('post-input-avatar').src = data.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150';
+            document.getElementById('sidebar-display-name').textContent = data.username;
+            document.getElementById('sidebar-username').textContent = `@${data.username}`;
+            document.getElementById('sidebar-bio').textContent = data.bio || 'No bio yet.';
+            document.getElementById('sidebar-post-count').textContent = data.post_count;
+            document.getElementById('sidebar-follower-count').textContent = data.follower_count;
+            document.getElementById('sidebar-following-count').textContent = data.following_count;
+        } catch (e) {
+            console.error('Failed to load user info', e);
+        }
+    }
+
+    function toggleImageInput() {
+        const container = document.getElementById('image-url-container');
+        container.classList.toggle('hidden');
+    }
+
+    // Load Feed Posts
+    async function loadFeed() {
+        const postsContainer = document.getElementById('posts-container');
+        const loader = document.getElementById('loader');
+        const emptyState = document.getElementById('empty-state');
+        
+        try {
+            const posts = await api.get('/posts/feed');
+            loader.classList.add('hidden');
+            
+            if (posts.length === 0) {
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+                postsContainer.innerHTML = '';
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            emptyState.classList.remove('flex');
+            
+            postsContainer.innerHTML = posts.map(p => {
+                const isOwn = p.user_id === currentUser.id;
+                const likedClass = p.is_liked ? 'text-primary' : 'text-on-surface-variant';
+                const likedFill = p.is_liked ? '1' : '0';
+                const imageHtml = p.image_url ? `<img src="${p.image_url}" alt="Post Image" class="w-full h-[320px] object-cover rounded-lg mb-md"/>` : '';
+                const editDeleteHtml = isOwn ? `
+                    <div class="flex gap-sm">
+                        <button onclick="editPost(${p.id}, this)" class="text-on-surface-variant hover:text-tertiary transition-colors"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                        <button onclick="deletePost(${p.id})" class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                    </div>` : '';
+
+                return `
+                <article class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant overflow-hidden" id="post-${p.id}">
+                    <div class="p-md">
+                        <div class="flex justify-between items-start mb-md">
+                            <a href="profile.html?username=${p.author.username}" class="flex gap-md">
+                                <img src="${p.author.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150'}" alt="${p.author.username}" class="w-10 h-10 rounded-full object-cover"/>
+                                <div>
+                                    <h3 class="font-bold text-on-surface font-body-lg text-body-lg">${p.author.username}</h3>
+                                    <p class="text-on-surface-variant text-[12px]">${api.formatRelativeTime(p.created_at)} ${p.is_edited ? '• Edited' : ''}</p>
+                                </div>
+                            </a>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface mb-md whitespace-pre-wrap post-content">${p.content}</p>
+                        ${imageHtml}
+                        <!-- Action Bar -->
+                        <div class="flex items-center justify-between pt-sm border-t border-outline-variant">
+                            <div class="flex gap-lg">
+                                <button onclick="toggleLike(${p.id}, this)" class="flex items-center gap-xs ${likedClass} transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' ${likedFill}">favorite</span>
+                                    <span class="text-label-sm like-count">${p.like_count}</span>
+                                </button>
+                                <a href="post.html?id=${p.id}" class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">comment</span>
+                                    <span class="text-label-sm">${p.comment_count}</span>
+                                </a>
+                            </div>
+                            ${editDeleteHtml}
+                        </div>
+                    </div>
+                </article>`;
+            }).join('');
+        } catch (e) {
+            loader.textContent = 'Failed to load posts';
+            console.error(e);
+        }
+    }
+
+    // Toggle post like
+    async function toggleLike(postId, btn) {
+        const icon = btn.querySelector('.material-symbols-outlined');
+        const countSpan = btn.querySelector('.like-count');
+        const isLiked = icon.style.fontVariationSettings.includes("'FILL' 1");
+        
+        let count = parseInt(countSpan.textContent);
+        
+        // Optimistic UI update
+        if (isLiked) {
+            icon.style.fontVariationSettings = "'FILL' 0";
+            btn.classList.remove('text-primary');
+            btn.classList.add('text-on-surface-variant');
+            countSpan.textContent = count - 1;
+        } else {
+            icon.style.fontVariationSettings = "'FILL' 1";
+            btn.classList.add('text-primary');
+            btn.classList.remove('text-on-surface-variant');
+            countSpan.textContent = count + 1;
+            btn.classList.add('scale-110');
+            setTimeout(() => btn.classList.remove('scale-110'), 200);
+        }
+
+        try {
+            if (isLiked) {
+                await api.delete(`/posts/${postId}/like`);
+            } else {
+                await api.post(`/posts/${postId}/like`);
+            }
+        } catch (e) {
+            // Revert on error
+            console.error(e);
+            alert('Could not update like');
+            loadFeed();
+        }
+    }
+
+    // Create a new post
+    const createForm = document.getElementById('create-post-form');
+    createForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const content = document.getElementById('new-post-content').value;
+        const imageUrl = document.getElementById('new-post-image-url').value;
+        const postBtn = document.getElementById('post-btn');
+
+        postBtn.disabled = true;
+        postBtn.textContent = 'Posting...';
+
+        try {
+            await api.post('/posts', { content, image_url: imageUrl });
+            document.getElementById('new-post-content').value = '';
+            document.getElementById('new-post-image-url').value = '';
+            document.getElementById('image-url-container').classList.add('hidden');
+            loadFeed();
+            loadSidebar();
+        } catch (err) {
+            alert(err.message || 'Failed to publish post');
+        } finally {
+            postBtn.disabled = false;
+            postBtn.textContent = 'Post';
+        }
+    });
+
+    // Edit Post
+    async function editPost(postId, btn) {
+        const postArticle = document.getElementById(`post-${postId}`);
+        const contentP = postArticle.querySelector('.post-content');
+        const originalContent = contentP.textContent;
+        const newContent = prompt('Edit your post:', originalContent);
+        if (newContent === null || newContent.trim() === '' || newContent === originalContent) return;
+
+        try {
+            await api.put(`/posts/${postId}`, { content: newContent });
+            contentP.textContent = newContent;
+            alert('Post updated successfully!');
+        } catch (e) {
+            alert(e.message || 'Could not update post');
+        }
+    }
+
+    // Delete post
+    async function deletePost(postId) {
+        if (!confirm('Are you sure you want to delete this post?')) return;
+        try {
+            await api.delete(`/posts/${postId}`);
+            document.getElementById(`post-${postId}`).remove();
+            loadSidebar();
+        } catch (e) {
+            alert(e.message || 'Could not delete post');
+        }
+    }
+
+    // Initial page load
+    loadSidebar();
+    loadFeed();
+</script>
+</body></html>
